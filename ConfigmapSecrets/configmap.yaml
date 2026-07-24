@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: dev
+
+data:
+  APP_NAME: "My DevOps App"
+  ENVIRONMENT: "Development"
+  LOG_LEVEL: "DEBUG"

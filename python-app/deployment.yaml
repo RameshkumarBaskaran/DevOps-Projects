@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: python-app
+
+spec:
+  replicas: 4
+
+  selector:
+    matchLabels:
+      app: python-app
+
+  template:
+    metadata:
+      labels:
+        app: python-app
+
+    spec:
+      containers:
+      - name: python-app
+        image: rameshbaskaran/python-app:v1
+        imagePullPolicy: Always
+
+        ports:
+        - containerPort: 5000
+
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 15
+          periodSeconds: 10
+
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "250m"
+            memory: "256Mi"

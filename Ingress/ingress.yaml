@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+
+metadata:
+  name: demo-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+
+spec:
+  ingressClassName: nginx
+
+  rules:
+  - http:
+      paths:
+      - path: /python(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: python-service
+            port:
+              number: 80
+
+      - path: /monitoring(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: monitoring-service
+            port:
+              number: 80

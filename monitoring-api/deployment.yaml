@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: monitoring-api
+
+spec:
+  replicas: 10
+
+  selector:
+    matchLabels:
+      app: monitoring-api
+
+  template:
+    metadata:
+      labels:
+        app: monitoring-api
+
+    spec:
+      containers:
+      - name: monitoring-api
+        image: rameshbaskaran/monitoring-api:v1
+        imagePullPolicy: Always
+
+        ports:
+        - containerPort: 5000

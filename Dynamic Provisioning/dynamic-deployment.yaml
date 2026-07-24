@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: dynamic-storage-demo
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: dynamic-storage-demo
+
+  template:
+    metadata:
+      labels:
+        app: dynamic-storage-demo
+
+    spec:
+      containers:
+      - name: ubuntu
+        image: ubuntu:22.04
+        command:
+        - "/bin/bash"
+        - "-c"
+        - "while true; do sleep 3600; done"
+
+        volumeMounts:
+        - name: storage
+          mountPath: /data
+
+      volumes:
+      - name: storage
+        persistentVolumeClaim:
+          claimName: dynamic-pvc

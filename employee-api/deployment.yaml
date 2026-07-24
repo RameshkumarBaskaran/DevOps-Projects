@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: employee-api-mysql
+
+spec:
+  replicas: 5
+
+  selector:
+    matchLabels:
+      app: employee-api-mysql
+
+  template:
+    metadata:
+      labels:
+        app: employee-api-mysql
+
+    spec:
+      containers:
+      - name: employee-api-mysql
+        image: rameshbaskaran/employee-api-mysql:v2
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+
+        env:
+        - name: DB_HOST
+          value: mysql-service
+
+        - name: DB_USER
+          value: root
+
+        - name: DB_PASSWORD
+          value: root123
+
+        - name: DB_NAME
+          value: employee_db

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-calculator
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: python-calculator
+  template:
+    metadata:
+      labels:
+        app: python-calculator
+    spec:
+      containers:
+      - name: python-calculator
+        image: rameshbaskaran/python-calculator:v2
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+       
