@@ -10,7 +10,7 @@ employees = [
 # Home
 @app.route("/")
 def home():
-    return "Employee Management API"
+    return "return Employee Management API - Version 2"
 
 # Get all employees
 @app.route("/employees", methods=["GET"])
