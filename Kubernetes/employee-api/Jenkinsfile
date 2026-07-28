@@ -1,0 +1,26 @@
+pipeline {
+
+    agent any
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                echo 'Getting source code from GitHub'
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                echo 'Building Docker image'
+            }
+        }
+
+        stage('Deploy Kubernetes') {
+            steps {
+                echo 'Deploying application to Kubernetes'
+            }
+        }
+
+    }
+}
