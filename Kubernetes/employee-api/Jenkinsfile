@@ -1,26 +1,15 @@
 pipeline {
-
     agent any
 
     stages {
-
-        stage('Checkout') {
+        stage('Environment Check') {
             steps {
-                echo 'Getting source code from GitHub'
+                bat 'whoami'
+                bat 'docker --version'
+                bat 'docker ps'
+                bat 'kubectl get nodes'
+                bat 'git --version'
             }
         }
-
-        stage('Docker Build') {
-            steps {
-                echo 'Building Docker image'
-            }
-        }
-
-        stage('Deploy Kubernetes') {
-            steps {
-                echo 'Deploying application to Kubernetes'
-            }
-        }
-
     }
 }
