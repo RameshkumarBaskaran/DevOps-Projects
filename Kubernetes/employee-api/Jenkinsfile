@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        IMAGE_NAME = "rameshbaskaran/employee-api"
-        IMAGE_TAG = "v1"
-    }
-
     stages {
 
         stage('Checkout') {
@@ -14,27 +9,13 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Kubernetes Check') {
             steps {
-                dir('Kubernetes/employee-api') {
-                    bat 'docker build -t %IMAGE_NAME%:%IMAGE_TAG% .'
-                }
+                bat 'kubectl config current-context'
+                bat 'kubectl get nodes'
+                bat 'kubectl get pods -A'
             }
         }
 
-        stage('Push Docker Image') {
-            steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-creds',
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
-                )]) {
-                    bat '''
-                    docker login -u %DOCKER_USER% -p %DOCKER_PASS%
-                    docker push %IMAGE_NAME%:%IMAGE_TAG%
-                    '''
-                }
-            }
-        }
     }
 }
