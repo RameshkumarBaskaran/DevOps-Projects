@@ -1,14 +1,24 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = "rameshbaskaran/employee-api"
+        IMAGE_TAG = "v1"
+    }
+
     stages {
-        stage('Environment Check') {
+
+        stage('Checkout') {
             steps {
-                bat 'whoami'
-                bat 'docker --version'
-                bat 'docker ps'
-                bat 'kubectl get nodes'
-                bat 'git --version'
+                checkout scm
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                dir('Kubernetes/employee-api') {
+                    bat 'docker build -t %IMAGE_NAME%:%IMAGE_TAG% .'
+                }
             }
         }
     }
