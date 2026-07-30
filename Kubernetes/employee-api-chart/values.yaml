@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: rameshbaskaran/employee-api
-  tag: "19"
+  tag: "20"
   pullPolicy: IfNotPresent
 
 service:
