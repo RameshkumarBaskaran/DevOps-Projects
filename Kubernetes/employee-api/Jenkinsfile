@@ -19,19 +19,6 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Code Quality - SonarQube') {
-    steps {
-        script {
-            def scannerHome = tool 'SonarScanner'
-
-            withSonarQubeEnv('SonarQube') {
-                dir('Kubernetes/employee-api') {
-                    bat "\"${scannerHome}\\bin\\sonar-scanner.bat\""
-                }
-            }
-        }
-    }
-}
 
         stage('Code Quality - SonarQube') {
             steps {
@@ -53,7 +40,7 @@ pipeline {
             }
         }
 
-             stage('Build Docker Image') {
+        stage('Build Docker Image') {
             steps {
 
                 dir('Kubernetes/employee-api') {
@@ -63,9 +50,19 @@ pipeline {
                     """
 
                 }
+            }
+        }
+
+        stage('Verify Docker Image') {
+            steps {
+
+                bat """
+                docker images
+                """
 
             }
         }
+
         stage('Push Docker Image') {
             steps {
 
@@ -83,7 +80,6 @@ pipeline {
                     """
 
                 }
-
             }
         }
 
@@ -92,44 +88,50 @@ pipeline {
 
                 bat """
                 kubectl set image deployment/employee-api employee-api=%IMAGE_NAME%:%IMAGE_TAG%
+                kubectl rollout status deployment/employee-api
                 """
 
             }
         }
 
-        stage('Verify Rollout') {
+        stage('Verify Kubernetes Deployment') {
             steps {
 
                 bat """
-                kubectl rollout status deployment/employee-api
-                kubectl get deployment
+                kubectl get deployment employee-api
                 kubectl get pods
                 kubectl get svc
+                kubectl get deployment employee-api -o=jsonpath="{.spec.template.spec.containers[0].image}"
                 """
 
             }
         }
-
     }
 
     post {
 
         success {
-            echo "===================================="
-            echo "Deployment Successful"
-            echo "Image : ${IMAGE_NAME}:${IMAGE_TAG}"
-            echo "===================================="
+
+            echo "======================================"
+            echo "Pipeline Executed Successfully"
+            echo "Docker Image : ${IMAGE_NAME}:${IMAGE_TAG}"
+            echo "======================================"
+
         }
 
         failure {
-            echo "===================================="
+
+            echo "======================================"
             echo "Pipeline Failed"
             echo "Check Jenkins Console Output"
-            echo "===================================="
+            echo "======================================"
+
         }
 
         always {
+
             cleanWs()
+
         }
     }
 }
