@@ -1,0 +1,13 @@
+replicaCount: 1
+
+image:
+  repository: rameshbaskaran/employee-api
+  tag: "19"
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 5000
+  nodePort: 30080
+
+containerPort: 5000
