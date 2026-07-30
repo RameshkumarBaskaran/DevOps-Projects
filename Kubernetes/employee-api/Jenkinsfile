@@ -50,6 +50,7 @@ pipeline {
                     """
 
                 }
+
             }
         }
 
@@ -58,6 +59,17 @@ pipeline {
 
                 bat """
                 docker images
+                """
+
+            }
+        }
+
+        stage('Trivy Image Scan') {
+            steps {
+
+                bat """
+                trivy image --format table --output trivy-report.txt %IMAGE_NAME%:%IMAGE_TAG%
+                type trivy-report.txt
                 """
 
             }
@@ -80,6 +92,7 @@ pipeline {
                     """
 
                 }
+
             }
         }
 
@@ -98,40 +111,56 @@ pipeline {
             steps {
 
                 bat """
-                kubectl get deployment employee-api
-                kubectl get pods
-                kubectl get svc
+                echo =====================================
+                echo Current Deployment Image
                 kubectl get deployment employee-api -o=jsonpath="{.spec.template.spec.containers[0].image}"
+                echo.
+
+                echo =====================================
+                echo Deployments
+                kubectl get deployment
+
+                echo =====================================
+                echo Pods
+                kubectl get pods
+
+                echo =====================================
+                echo Services
+                kubectl get svc
                 """
 
             }
         }
+
     }
 
     post {
 
         success {
 
-            echo "======================================"
+            echo "========================================="
             echo "Pipeline Executed Successfully"
             echo "Docker Image : ${IMAGE_NAME}:${IMAGE_TAG}"
-            echo "======================================"
+            echo "========================================="
 
         }
 
         failure {
 
-            echo "======================================"
+            echo "========================================="
             echo "Pipeline Failed"
             echo "Check Jenkins Console Output"
-            echo "======================================"
+            echo "========================================="
 
         }
 
         always {
 
+            archiveArtifacts artifacts: 'trivy-report.txt', allowEmptyArchive: true
             cleanWs()
 
         }
+
     }
+
 }
