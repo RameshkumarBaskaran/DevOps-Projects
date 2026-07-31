@@ -96,38 +96,64 @@ pipeline {
             }
         }
 
-        stage('Deploy to Kubernetes') {
+        stage('Update Helm values.yaml') {
             steps {
 
-                bat """
-                kubectl set image deployment/employee-api employee-api=%IMAGE_NAME%:%IMAGE_TAG%
-                kubectl rollout status deployment/employee-api
-                """
+                dir('Kubernetes/employee-api-chart') {
+
+                    bat """
+                    powershell -Command "(Get-Content values.yaml) -replace 'tag: \\".*\\"','tag: \\"%IMAGE_TAG%\\"' | Set-Content values.yaml"
+
+                    echo ====================================
+                    echo Updated values.yaml
+                    echo ====================================
+
+                    type values.yaml
+                    """
+
+                }
 
             }
         }
 
-        stage('Verify Kubernetes Deployment') {
+        stage('Commit & Push Helm Chart') {
             steps {
 
-                bat """
-                echo =====================================
-                echo Current Deployment Image
-                kubectl get deployment employee-api -o=jsonpath="{.spec.template.spec.containers[0].image}"
-                echo.
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'github-creds',
+                        usernameVariable: 'GIT_USER',
+                        passwordVariable: 'GIT_PASS'
+                    )
+                ]) {
 
-                echo =====================================
-                echo Deployments
-                kubectl get deployment
+                    bat """
+                    git config user.name "Jenkins"
+                    git config user.email "jenkins@local"
 
-                echo =====================================
-                echo Pods
-                kubectl get pods
+                    git add Kubernetes/employee-api-chart/values.yaml
 
-                echo =====================================
-                echo Services
-                kubectl get svc
-                """
+                    git commit -m "Update image tag to %IMAGE_TAG%"
+
+                    git remote set-url origin https://%GIT_USER%:%GIT_PASS%@github.com/RameshkumarBaskaran/DevOps-Projects.git
+
+                    git push origin main
+                    """
+
+                }
+
+            }
+        }
+
+        stage('GitOps Verification') {
+            steps {
+
+                echo "======================================="
+                echo "GitHub repository updated successfully."
+                echo "Argo CD should detect the new commit."
+                echo "Watch Argo CD:"
+                echo "Healthy -> OutOfSync -> Syncing -> Healthy"
+                echo "======================================="
 
             }
         }
@@ -141,6 +167,9 @@ pipeline {
             echo "========================================="
             echo "Pipeline Executed Successfully"
             echo "Docker Image : ${IMAGE_NAME}:${IMAGE_TAG}"
+            echo "Helm Chart Updated"
+            echo "GitHub Updated"
+            echo "Waiting for Argo CD Sync"
             echo "========================================="
 
         }
