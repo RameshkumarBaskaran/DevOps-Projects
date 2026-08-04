@@ -1,9 +1,11 @@
 variable "aws_region" {
-  description = "AWS Region"
-  type        = string
+  default = "ap-south-1"
 }
 
 variable "environment" {
-  description = "Deployment Environment"
-  type        = string
+  default = "dev"
+}
+
+variable "vpc_cidr" {
+  default = "10.0.0.0/16"
 }
