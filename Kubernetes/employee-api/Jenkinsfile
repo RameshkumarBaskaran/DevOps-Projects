@@ -76,25 +76,31 @@ pipeline {
         }
 
         stage('Push Docker Image') {
-            steps {
+    steps {
 
-                withCredentials([
-                    usernamePassword(
-                        credentialsId: 'dockerhub-creds',
-                        usernameVariable: 'DOCKER_USER',
-                        passwordVariable: 'DOCKER_PASS'
-                    )
-                ]) {
+        withCredentials([
+            usernamePassword(
+                credentialsId: 'dockerhub-creds',
+                usernameVariable: 'DOCKER_USER',
+                passwordVariable: 'DOCKER_PASS'
+            )
+        ]) {
 
-                    bat """
-                    echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
-                    docker push %IMAGE_NAME%:%IMAGE_TAG%
-                    """
+            bat """
+            echo Logging into Docker Hub as %DOCKER_USER%
 
-                }
+            echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
 
-            }
+            docker images
+
+            docker push %IMAGE_NAME%:%IMAGE_TAG%
+
+            docker logout
+            """
+
         }
+    }
+}
 
         stage('Update Helm values.yaml') {
             steps {
@@ -117,33 +123,30 @@ pipeline {
         }
 
         stage('Commit & Push Helm Chart') {
-            steps {
+    steps {
 
-                withCredentials([
-                    usernamePassword(
-                        credentialsId: 'github-creds',
-                        usernameVariable: 'GIT_USER',
-                        passwordVariable: 'GIT_PASS'
-                    )
-                ]) {
+        withCredentials([
+            usernamePassword(
+                credentialsId: 'github-creds',
+                usernameVariable: 'GIT_USER',
+                passwordVariable: 'GIT_PASS'
+            )
+        ]) {
 
-                    bat """
-                    git config user.name "Jenkins"
-                    git config user.email "jenkins@local"
+            bat """
+            git config user.name "Jenkins"
+            git config user.email "jenkins@local"
 
-                    git add Kubernetes/employee-api-chart/values.yaml
+            git add Kubernetes/employee-api-chart/values.yaml
 
-                    git commit -m "Update image tag to %IMAGE_TAG%"
+            git commit -m "Update image tag to %IMAGE_TAG%" || echo No changes to commit
 
-                    git remote set-url origin https://%GIT_USER%:%GIT_PASS%@github.com/RameshkumarBaskaran/DevOps-Projects.git
+            git push https://%GIT_USER%:%GIT_PASS%@github.com/RameshkumarBaskaran/DevOps-Projects.git HEAD:main
+            """
 
-                    git push origin main
-                    """
-
-                }
-
-            }
         }
+    }
+}
 
         stage('GitOps Verification') {
             steps {
