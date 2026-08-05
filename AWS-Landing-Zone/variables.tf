@@ -1,25 +1,19 @@
-variable "aws_region" {
-  type    = string
-  default = "ap-south-1"
-}
+aws_region  = "ap-south-1"
+environment = "dev"
 
-variable "environment" {
-  type    = string
-  default = "dev"
-}
+vpc_cidr = "10.0.0.0/16"
 
-variable "vpc_cidr" {
-  type = string
-}
+availability_zones = [
+  "ap-south-1a",
+  "ap-south-1b"
+]
 
-variable "availability_zones" {
-  type = list(string)
-}
+public_subnets = [
+  "10.0.1.0/24",
+  "10.0.2.0/24"
+]
 
-variable "public_subnets" {
-  type = list(string)
-}
-
-variable "private_subnets" {
-  type = list(string)
-}
+private_subnets = [
+  "10.0.11.0/24",
+  "10.0.12.0/24"
+]
