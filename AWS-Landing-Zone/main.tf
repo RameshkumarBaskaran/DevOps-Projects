@@ -9,3 +9,13 @@ module "vpc" {
   private_subnets    = var.private_subnets
 
 }
+module "bastion" {
+
+  source = "./modules/bastion"
+
+  environment      = var.environment
+  public_subnet_id = module.vpc.public_subnet_ids[0]
+
+  ami_id        = var.ami_id
+  instance_type = var.instance_type
+}
