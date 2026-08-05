@@ -33,3 +33,6 @@ output "nat_gateway_id" {
 output "elastic_ip" {
   value = aws_eip.nat.public_ip
 }
+output "bastion_security_group_id" {
+  value = aws_security_group.bastion.id
+}
