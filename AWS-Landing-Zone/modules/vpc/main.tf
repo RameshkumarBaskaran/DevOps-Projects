@@ -8,3 +8,12 @@ resource "aws_vpc" "this" {
     Environment = var.environment
   }
 }
+
+resource "aws_internet_gateway" "this" {
+  vpc_id = aws_vpc.this.id
+
+  tags = {
+    Name        = "${var.environment}-igw"
+    Environment = var.environment
+  }
+}
