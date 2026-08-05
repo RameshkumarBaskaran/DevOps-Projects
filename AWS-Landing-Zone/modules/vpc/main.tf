@@ -42,3 +42,27 @@ resource "aws_subnet" "public_2" {
     Tier        = "Public"
   }
 }
+resource "aws_subnet" "private_1" {
+
+  vpc_id            = aws_vpc.this.id
+  cidr_block        = var.private_subnets[0]
+  availability_zone = var.availability_zones[0]
+
+  tags = {
+    Name        = "${var.environment}-private-subnet-1"
+    Environment = var.environment
+    Tier        = "Private"
+  }
+}
+resource "aws_subnet" "private_2" {
+
+  vpc_id            = aws_vpc.this.id
+  cidr_block        = var.private_subnets[1]
+  availability_zone = var.availability_zones[1]
+
+  tags = {
+    Name        = "${var.environment}-private-subnet-2"
+    Environment = var.environment
+    Tier        = "Private"
+  }
+}
