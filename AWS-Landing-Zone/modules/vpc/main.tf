@@ -17,3 +17,28 @@ resource "aws_internet_gateway" "this" {
     Environment = var.environment
   }
 }
+resource "aws_subnet" "public_1" {
+  vpc_id                  = aws_vpc.this.id
+  cidr_block              = var.public_subnets[0]
+  availability_zone       = var.availability_zones[0]
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name        = "${var.environment}-public-subnet-1"
+    Environment = var.environment
+    Tier        = "Public"
+  }
+}
+
+resource "aws_subnet" "public_2" {
+  vpc_id                  = aws_vpc.this.id
+  cidr_block              = var.public_subnets[1]
+  availability_zone       = var.availability_zones[1]
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name        = "${var.environment}-public-subnet-2"
+    Environment = var.environment
+    Tier        = "Public"
+  }
+}
