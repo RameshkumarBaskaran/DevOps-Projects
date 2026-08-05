@@ -21,3 +21,10 @@ module "bastion" {
   ami_id        = var.ami_id
   instance_type = var.instance_type
 }
+module "iam" {
+
+  source = "./modules/iam"
+
+  environment = var.environment
+
+}
