@@ -121,3 +121,12 @@ module "cloudtrail" {
   environment = var.environment
 
 }
+module "flowlogs" {
+
+  source = "./modules/flowlogs"
+
+  environment = var.environment
+
+  vpc_id = module.vpc.vpc_id
+
+}
