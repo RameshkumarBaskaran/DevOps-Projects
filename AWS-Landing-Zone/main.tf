@@ -78,3 +78,14 @@ module "route53" {
   alb_zone_id = module.vpc.alb_zone_id
 
 }
+module "monitoring" {
+
+  source = "./modules/monitoring"
+
+  environment = var.environment
+
+  instance_id = module.app_server.instance_id
+
+  notification_email = var.notification_email
+
+}

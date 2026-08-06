@@ -25,5 +25,6 @@ instance_type = "t2.micro"
 public_key    = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDReplaceWithYourRealPublicKey"
 db_username   = "admin"
 
-db_password = "ChangeMe123!"
-domain_name = "awslandingzone.local"
+db_password        = "ChangeMe123!"
+domain_name        = "awslandingzone.local"
+notification_email = "rameshkumar.baskaran@gmail.com"
