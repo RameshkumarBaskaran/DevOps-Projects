@@ -89,3 +89,10 @@ module "monitoring" {
   notification_email = var.notification_email
 
 }
+module "backend" {
+
+  source = "./modules/backend"
+
+  environment = var.environment
+
+}
