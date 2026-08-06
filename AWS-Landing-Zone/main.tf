@@ -114,3 +114,10 @@ module "secrets" {
   db_password = var.db_password
 
 }
+module "cloudtrail" {
+
+  source = "./modules/cloudtrail"
+
+  environment = var.environment
+
+}
