@@ -28,3 +28,6 @@ variable "name" {
 variable "public_key" {
   type = string
 }
+variable "target_group_arn" {
+  type = string
+}

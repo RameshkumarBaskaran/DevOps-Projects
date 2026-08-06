@@ -42,7 +42,8 @@ module "app_server" {
 
   instance_type = var.instance_type
 
-  subnet_id = module.vpc.private_subnet_ids[0]
+  subnet_id        = module.vpc.private_subnet_ids[0]
+  target_group_arn = module.vpc.target_group_arn
 
   security_group_ids = [
     module.vpc.app_security_group_id
