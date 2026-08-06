@@ -51,3 +51,17 @@ module "app_server" {
   instance_profile_name = module.iam.instance_profile_name
   public_key            = var.public_key
 }
+module "rds" {
+
+  source = "./modules/rds"
+
+  environment = var.environment
+
+  db_username = var.db_username
+  db_password = var.db_password
+
+  db_subnet_group_name = module.vpc.db_subnet_group_name
+
+  security_group_id = module.vpc.rds_security_group_id
+
+}
