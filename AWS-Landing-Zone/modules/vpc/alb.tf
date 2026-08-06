@@ -53,3 +53,42 @@ resource "aws_lb" "this" {
     Environment = var.environment
   }
 }
+resource "aws_lb_target_group" "app" {
+
+  name = "${var.environment}-app-tg"
+
+  port = 80
+
+  protocol = "HTTP"
+
+  vpc_id = aws_vpc.this.id
+
+  health_check {
+
+    enabled = true
+
+    path = "/"
+
+    protocol = "HTTP"
+
+    matcher = "200"
+
+    interval = 30
+
+    timeout = 5
+
+    healthy_threshold = 3
+
+    unhealthy_threshold = 3
+
+  }
+
+  tags = {
+
+    Name = "${var.environment}-app-tg"
+
+    Environment = var.environment
+
+  }
+
+}
