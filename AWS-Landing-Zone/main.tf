@@ -103,3 +103,14 @@ module "kms" {
   environment = var.environment
 
 }
+module "secrets" {
+
+  source = "./modules/secrets"
+
+  environment = var.environment
+
+  db_username = var.db_username
+
+  db_password = var.db_password
+
+}
