@@ -65,3 +65,12 @@ module "rds" {
   security_group_id = module.vpc.rds_security_group_id
 
 }
+module "route53" {
+
+  source = "./modules/route53"
+
+  environment = var.environment
+
+  domain_name = var.domain_name
+
+}

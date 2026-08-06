@@ -38,3 +38,6 @@ variable "db_username" {
 variable "db_password" {
   type = string
 }
+variable "domain_name" {
+  type = string
+}
