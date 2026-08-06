@@ -26,4 +26,4 @@ public_key    = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDReplaceWithYourRealPubli
 db_username   = "admin"
 
 db_password = "ChangeMe123!"
-domain_name = "example.internal"
+domain_name = "awslandingzone.local"
