@@ -130,3 +130,10 @@ module "flowlogs" {
   vpc_id = module.vpc.vpc_id
 
 }
+module "config" {
+
+  source = "./modules/config"
+
+  environment = var.environment
+
+}
