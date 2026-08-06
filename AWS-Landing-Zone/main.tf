@@ -47,6 +47,6 @@ module "app_server" {
   security_group_ids = [
     module.vpc.app_security_group_id
   ]
-
   instance_profile_name = module.iam.instance_profile_name
+  public_key            = var.public_key
 }

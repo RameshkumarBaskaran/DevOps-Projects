@@ -25,3 +25,6 @@ variable "instance_profile_name" {
 variable "name" {
   type = string
 }
+variable "public_key" {
+  type = string
+}

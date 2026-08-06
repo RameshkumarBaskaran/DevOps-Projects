@@ -22,3 +22,4 @@ private_subnets = [
 ami_id = "ami-0f58b397bc5c1f2e8"
 
 instance_type = "t2.micro"
+public_key    = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDReplaceWithYourRealPublicKey"
