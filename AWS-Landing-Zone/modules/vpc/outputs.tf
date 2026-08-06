@@ -60,3 +60,6 @@ output "alb_listener_arn" {
   value = aws_lb_listener.http.arn
 
 }
+output "db_subnet_group_name" {
+  value = aws_db_subnet_group.this.name
+}
