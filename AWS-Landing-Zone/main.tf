@@ -137,3 +137,12 @@ module "config" {
   environment = var.environment
 
 }
+module "budgets" {
+
+  source = "./modules/budgets"
+
+  environment = var.environment
+
+  notification_email = var.notification_email
+
+}
