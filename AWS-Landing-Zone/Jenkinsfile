@@ -29,7 +29,7 @@ pipeline {
         stage('Terraform Workspace') {
     steps {
         dir('AWS-Landing-Zone') {
-            bat "terraform workspace select ${params.ENVIRONMENT} || terraform workspace new ${params.ENVIRONMENT}"
+            bat "terraform workspace select -or-create ${params.ENVIRONMENT}"
         }
     }
 }
