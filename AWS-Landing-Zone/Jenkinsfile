@@ -2,6 +2,14 @@ pipeline {
 
     agent any
 
+    parameters {
+        choice(
+            name: 'ENVIRONMENT',
+            choices: ['dev', 'qa', 'staging', 'prod'],
+            description: 'Select Terraform Environment'
+        )
+    }
+
     stages {
 
         stage('Checkout') {
@@ -14,6 +22,16 @@ pipeline {
             steps {
                 dir('AWS-Landing-Zone') {
                     bat 'terraform init'
+                }
+            }
+        }
+
+        stage('Terraform Workspace') {
+            steps {
+                dir('AWS-Landing-Zone') {
+                    bat """
+                    terraform workspace select %ENVIRONMENT% || terraform workspace new %ENVIRONMENT%
+                    """
                 }
             }
         }
@@ -41,6 +59,5 @@ pipeline {
                 }
             }
         }
-
     }
 }
