@@ -59,3 +59,14 @@ pipeline {
         }
     }
 }
+stage('Manual Approval') {
+
+    steps {
+
+        input message: 'Terraform Plan completed successfully. Approve to continue?', ok: 'Approve'
+
+        echo 'Approval received.'
+
+    }
+
+}
