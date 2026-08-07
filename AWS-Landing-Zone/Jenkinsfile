@@ -27,12 +27,12 @@ pipeline {
         }
 
         stage('Terraform Workspace') {
-    steps {
-        dir('AWS-Landing-Zone') {
-            bat "terraform workspace select -or-create ${params.ENVIRONMENT}"
+            steps {
+                dir('AWS-Landing-Zone') {
+                    bat "terraform workspace select -or-create ${params.ENVIRONMENT}"
+                }
+            }
         }
-    }
-}
 
         stage('Terraform Format') {
             steps {
@@ -57,15 +57,13 @@ pipeline {
                 }
             }
         }
-    }
-}
-stage('Manual Approval') {
 
-    steps {
-
-        input message: 'Terraform Plan completed successfully. Approve to continue?', ok: 'Approve'
-
-        echo 'Approval received.'
+        stage('Manual Approval') {
+            steps {
+                input message: 'Terraform Plan completed successfully. Approve to continue?', ok: 'Approve'
+                echo 'Approval received.'
+            }
+        }
 
     }
 
