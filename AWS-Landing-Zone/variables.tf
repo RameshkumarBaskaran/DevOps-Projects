@@ -1,46 +1,11 @@
 variable "aws_region" {
-  type = string
+
+  default = "ap-south-1"
+
 }
 
 variable "environment" {
-  type = string
-}
 
-variable "vpc_cidr" {
-  type = string
-}
+  default = "dev"
 
-variable "availability_zones" {
-  type = list(string)
-}
-
-variable "public_subnets" {
-  type = list(string)
-}
-
-variable "private_subnets" {
-  type = list(string)
-}
-variable "ami_id" {
-  type = string
-}
-
-variable "instance_type" {
-  type = string
-}
-variable "public_key" {
-  type = string
-}
-variable "db_username" {
-  type = string
-}
-
-variable "db_password" {
-  type = string
-}
-variable "domain_name" {
-  type = string
-}
-variable "notification_email" {
-  type = string
 }
