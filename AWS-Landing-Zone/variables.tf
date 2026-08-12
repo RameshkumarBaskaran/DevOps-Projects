@@ -1,19 +1,11 @@
-aws_region  = "ap-south-1"
-environment = "dev"
+variable "aws_region" {
 
-vpc_cidr = "10.0.0.0/16"
+  default = "ap-south-1"
 
-availability_zones = [
-  "ap-south-1a",
-  "ap-south-1b"
-]
+}
 
-public_subnets = [
-  "10.0.1.0/24",
-  "10.0.2.0/24"
-]
+variable "environment" {
 
-private_subnets = [
-  "10.0.11.0/24",
-  "10.0.12.0/24"
-]
+  default = "dev"
+
+}

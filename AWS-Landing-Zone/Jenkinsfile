@@ -1,0 +1,70 @@
+pipeline {
+
+    agent any
+
+    parameters {
+        choice(
+            name: 'ENVIRONMENT',
+            choices: ['dev', 'qa', 'staging', 'prod'],
+            description: 'Select Terraform Environment'
+        )
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Terraform Init') {
+            steps {
+                dir('AWS-Landing-Zone') {
+                    bat 'terraform init'
+                }
+            }
+        }
+
+        stage('Terraform Workspace') {
+            steps {
+                dir('AWS-Landing-Zone') {
+                    bat "terraform workspace select -or-create ${params.ENVIRONMENT}"
+                }
+            }
+        }
+
+        stage('Terraform Format') {
+            steps {
+                dir('AWS-Landing-Zone') {
+                    bat 'terraform fmt -check -recursive'
+                }
+            }
+        }
+
+        stage('Terraform Validate') {
+            steps {
+                dir('AWS-Landing-Zone') {
+                    bat 'terraform validate'
+                }
+            }
+        }
+
+        stage('Terraform Plan') {
+            steps {
+                dir('AWS-Landing-Zone') {
+                    bat 'terraform plan -out=tfplan'
+                }
+            }
+        }
+
+        stage('Manual Approval') {
+            steps {
+                input message: 'Terraform Plan completed successfully. Approve to continue?', ok: 'Approve'
+                echo 'Approval received.'
+            }
+        }
+
+    }
+
+}
