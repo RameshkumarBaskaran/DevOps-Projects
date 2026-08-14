@@ -1,19 +1,46 @@
-aws_region  = "ap-south-1"
-environment = "dev"
+variable "aws_region" {
+  type = string
+}
 
-vpc_cidr = "10.0.0.0/16"
+variable "environment" {
+  type = string
+}
 
-availability_zones = [
-  "ap-south-1a",
-  "ap-south-1b"
-]
+variable "vpc_cidr" {
+  type = string
+}
 
-public_subnets = [
-  "10.0.1.0/24",
-  "10.0.2.0/24"
-]
+variable "availability_zones" {
+  type = list(string)
+}
 
-private_subnets = [
-  "10.0.11.0/24",
-  "10.0.12.0/24"
-]
+variable "public_subnets" {
+  type = list(string)
+}
+
+variable "private_subnets" {
+  type = list(string)
+}
+variable "ami_id" {
+  type = string
+}
+
+variable "instance_type" {
+  type = string
+}
+variable "public_key" {
+  type = string
+}
+variable "db_username" {
+  type = string
+}
+
+variable "db_password" {
+  type = string
+}
+variable "domain_name" {
+  type = string
+}
+variable "notification_email" {
+  type = string
+}
