@@ -1,0 +1,35 @@
+
+# Azure DevOps - Enterprise CI Foundation
+
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: Validate
+    displayName: Repository Validation
+    jobs:
+      - job: ValidateRepository
+        displayName: Validate Source
+        steps:
+          - checkout: self
+
+          - script: |
+              echo "=================================="
+              echo "Enterprise DevOps CI Pipeline"
+              echo "Repository checkout successful"
+              echo "Agent OS: Linux"
+              echo "Branch: $(Build.SourceBranch)"
+              echo "Build ID: $(Build.BuildId)"
+              echo "=================================="
+            displayName: Verify Pipeline Execution
+
+          - script: |
+              echo "Checking repository contents..."
+              git status --short
+              echo "Repository validation completed."
+            displayName: Inspect Repository
