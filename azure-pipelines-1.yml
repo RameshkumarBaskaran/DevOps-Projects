@@ -1,0 +1,28 @@
+trigger:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.x'
+    displayName: 'Install Python'
+
+  - script: |
+      python --version
+      python -m pip --version
+    displayName: 'Verify Python installation'
+
+  - script: |
+      if [ -f requirements.txt ]; then
+        python -m pip install -r requirements.txt
+      else
+        echo "No requirements.txt found; skipping dependency installation."
+      fi
+    displayName: 'Install dependencies'
+
+  - script: |
+      python -m compileall -q .
+    displayName: 'Validate Python syntax'
